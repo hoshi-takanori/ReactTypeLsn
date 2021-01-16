@@ -21,8 +21,8 @@ export default function Content(props:ContentProps) {
         onChangeId={props.onChangeId}
         onChangeName={props.onChangeName}
         setCheckName={setCheckName}
-        id = ''
-        name = ''
+        id = {props.id}
+        name = {props.name}
       />
       <button type="button"
         className="btn btn-outline-success"
@@ -58,7 +58,7 @@ function Form(props:FormProps) {
         <input id="name"
           type="text"
           className="form-control"
-          value={props.name}
+          defaultValue={props.name}
           onChange={
             (e) =>
             {
