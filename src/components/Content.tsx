@@ -8,30 +8,38 @@ import Styled from 'styled-components';
 // `
 
 interface ContentProps {
-  id: string,
-  name: string,
-  onChangeId: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  checkName: boolean,
-  onSaveItem(): void
+  checkName: (id: string, name: string) => boolean,
+  onSaveItem: (id: string, name: string) => void
   }
 
-export default function Content(props:ContentProps) {
+export default function Content({ checkName, onSaveItem }: ContentProps) {
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+
+  const onClickSave = () => {
+    console.log(`onClickSave: id = ${id}, name = ${name}`);
+    if (checkName(id, name)) {
+      onSaveItem(id, name);
+      setId('');
+      setName('');
+    }
+  };
+
   //NAME３文字以上ででsaveボタン押せるようにdisabledを入れる
-  console.log(props)
+  //console.log(props)
   return (
     <>
       <p>content</p>
       <Form
-        id = {props.id}
-        name = {props.name}
-        onChangeId={props.onChangeId}
-        onChangeName={props.onChangeName}
+        id={id}
+        name={name}
+        setId={setId}
+        setName={setName}
       />
       <button type="button"
         className="btn btn-outline-success"
-        onClick={(e) => {props.onSaveItem();console.log(e)}}
-        disabled = {!props.checkName}
+        onClick={onClickSave}
+        disabled={!checkName(id, name)}
         >
         SAVE
       </button>
@@ -42,11 +50,11 @@ export default function Content(props:ContentProps) {
 interface FormProps {
   id: string,
   name: string,
-  onChangeId: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  setId: (id: string) => void,
+  setName: (name: string) => void,
   }
 
-function Form(props:FormProps) {
+function Form({ id, name, setId, setName }: FormProps) {
   return (
     <form>
       <div className="form-group">
@@ -54,15 +62,15 @@ function Form(props:FormProps) {
         <input id="id"
           type="text"
           className="form-control"
-          value={props.id}
-          onChange={props.onChangeId}
+          value={id}
+          onChange={e => setId(e.target.value)}
         />
         <label className="pt-2">Name</label>
         <input id="name"
           type="text"
           className="form-control"
-          value={props.name}
-          onChange={props.onChangeName}
+          value={name}
+          onChange={e => setName(e.target.value)}
         />
       </div>
     </form>
