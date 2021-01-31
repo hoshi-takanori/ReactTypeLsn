@@ -1,44 +1,30 @@
 'use strict';
-import React,{ useState } from 'react';
+import React from 'react';
 import Styled from 'styled-components';
-// import { createStore } from "redux";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFormId, updateFormName } from '../actions';
+import { getIdState, getNameState } from '../createStores';
 
 // const Form = styled.div<{primary: boolean}>`
   // margin: 20px;
 // `
 
 interface ContentProps {
-  checkName: (id: string, name: string) => boolean,
-  onSaveItem: (id: string, name: string) => void
-  }
+  checkName: boolean,
+  onSaveItem: () => void
+}
 
-  export default function Content({ checkName, onSaveItem }: ContentProps) {
-    const [id, setId] = useState('');
-    const [name, setName] = useState('');
-
-    const onClickSave = () => {
-      console.log(`onClickSave: id = ${id}, name = ${name}`);
-      if (checkName(id, name)) {
-        onSaveItem(id, name);
-        setId('');
-        setName('');
-      }
-    };
+export default function Content({ checkName, onSaveItem }: ContentProps) {
   //NAME３文字以上ででsaveボタン押せるようにdisabledを入れる
   // console.log(props)
   return (
     <>
       <p>content</p>
-      <Form
-        id={id}
-        name={name}
-        setId={setId}
-        setName={setName}
-      />
+      <Form />
       <button type="button"
         className="btn btn-outline-success"
-        onClick={onClickSave}
-        disabled={!checkName(id, name)}
+        onClick={onSaveItem}
+        disabled={!checkName}
       >
         SAVE
       </button>
@@ -46,14 +32,11 @@ interface ContentProps {
   );
 }
 
-interface FormProps {
-  id: string,
-  name: string,
-  setId: (id: string) => void,
-  setName: (name: string) => void,
-  }
+function Form() {
+  const dispatch = useDispatch();
+  const id = useSelector(getIdState);
+  const name = useSelector(getNameState);
 
-  function Form({ id, name, setId, setName }: FormProps) {
   return (
     <form>
       <div className="form-group">
@@ -62,14 +45,14 @@ interface FormProps {
           type="text"
           className="form-control"
           value={id}
-          onChange={e => setId(e.target.value)}
+          onChange={e => dispatch(updateFormId(e.target.value))}
         />
         <label className="pt-2">Name</label>
         <input id="name"
           type="text"
           className="form-control"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={e => dispatch(updateFormName(e.target.value))}
         />
       </div>
     </form>

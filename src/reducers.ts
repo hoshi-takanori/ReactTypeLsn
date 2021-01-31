@@ -1,6 +1,8 @@
 'use strict';
 import { ActionType } from './actions';
 
+export type IdState = string;
+
 const initialStateId = ""
 export function id(state = initialStateId, action: ActionType) {
     console.log(action);
@@ -15,6 +17,8 @@ export function id(state = initialStateId, action: ActionType) {
     console.log(newState)
     return newState;
 };
+
+export type NameState = string;
 
 const initialStateName = ""
 export function name(state = initialStateName, action: ActionType) {
