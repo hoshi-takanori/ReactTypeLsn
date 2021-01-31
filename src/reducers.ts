@@ -1,7 +1,8 @@
 'use strict';
+import { ActionType } from './actions';
 
 const initialStateId = ""
-export function id(state = initialStateId, action) {
+export function id(state = initialStateId, action: ActionType) {
     console.log(action);
     let newState = JSON.parse(JSON.stringify(state));
     switch (action.type) {
@@ -16,7 +17,7 @@ export function id(state = initialStateId, action) {
 };
 
 const initialStateName = ""
-export function name(state = initialStateName, action) {
+export function name(state = initialStateName, action: ActionType) {
     console.log(action);
     let newState = JSON.parse(JSON.stringify(state));
     switch (action.type) {
