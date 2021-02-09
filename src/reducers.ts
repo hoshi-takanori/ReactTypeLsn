@@ -8,35 +8,42 @@ import { ActionType } from './actions';
 
 // State の型。redux ではアプリケーションが持つ状態を一元管理するが、そのすべての状態をまとめた型 ApplicationState が欲しいため、まず reducers.ts で部分状態である id と name の型をそれぞれ IdState, NameState と定義して、createStores.ts でそれらをまとめて ApplicationState を定義
 
-export type IdState = string;
+export interface ItemState {
+    id: string,
+    name: string,
+    checkName: boolean,
+}
 
-const initialStateId = ""
-export function id(state = initialStateId, action: ActionType) {
-    console.log(action);
-    let newState = JSON.parse(JSON.stringify(state));
-    switch (action.type) {
-        case 'UPDATE_ID':
-            newState = action.payload.id;
-            break;
-        default:
-            return state;
-    }
-    console.log(newState)
-    return newState;
+const initialState = {
+    id: '',
+    name: '',
+    checkName: false,
 };
 
-export type NameState = string;
+function checkName(state: ItemState): boolean {
+    // バリデーションはここで定義
+    return state.name.length >=3;
 
-const initialStateName = ""
-export function name(state = initialStateName, action:ActionType) {
+    // id と name の両方が 3 文字以上、の場合
+    //return state.id.length >= 3 && state.name.length >= 3;
+}
+
+export function itemReducer(state = initialState, action: ActionType) {
     console.log(action);
-    let newState = JSON.parse(JSON.stringify(state));
+    let newState;
     switch (action.type) {
+        case 'UPDATE_ID':
+            newState = { ...state, id: action.payload.id };
+            return { ...newState, checkName: checkName(newState) };
         case 'UPDATE_NAME':
-            newState = action.payload.name;
-            break;
+            newState = { ...state, name: action.payload.name };
+            return { ...newState, checkName: checkName(newState) };
+        case 'SAVE_ITEM':
+            // SAVE ボタンの処理をここに書くこともできる。
+            console.log("SAVE_ID: ", state.id);
+            console.log("SAVE_NAME: ", state.name);
+            return state;
         default:
             return state;
     }
-    return newState;
 };

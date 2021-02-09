@@ -3,18 +3,19 @@ import React from 'react';
 import Styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFormId, updateFormName } from '../actions';
-import { getIdState, getNameState } from '../createStores';
+import { getIdState, getNameState, getCheckName } from '../createStores';
 
 // const Form = styled.div<{primary: boolean}>`
   // margin: 20px;
 // `
 
 interface ContentProps {
-  checkName: boolean,
   onSaveItem: () => void
   }
 
-export default function Content({ checkName, onSaveItem }: ContentProps) {
+export default function Content({ onSaveItem }: ContentProps) {
+  const checkName = useSelector(getCheckName);
+
   //NAME３文字以上ででsaveボタン押せるようにdisabledを入れる
   // console.log(props)
   return (
