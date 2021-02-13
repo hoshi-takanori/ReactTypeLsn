@@ -1,5 +1,5 @@
 'use strict';
-import { ActionType } from './actions';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 // action を ActionType 型としていますが、union 型の性質によって、case 'UPDATE_ID': や case 'UPDATE_NAME': の中では payload の型としてそれぞれ適切なものが選択され、action.payload.id や action.payload.name に安全にアクセスできる
@@ -28,22 +28,27 @@ function checkName(state: ItemState): boolean {
     //return state.id.length >= 3 && state.name.length >= 3;
 }
 
-export function itemReducer(state = initialState, action: ActionType) {
-    console.log(action);
-    let newState;
-    switch (action.type) {
-        case 'UPDATE_ID':
-            newState = { ...state, id: action.payload.id };
+const itemSlice = createSlice({
+    name: 'item',
+    initialState,
+    reducers: {
+        updateFormId: (state, action: PayloadAction<string>) => {
+            const newState = { ...state, id: action.payload };
             return { ...newState};
-        case 'UPDATE_NAME':
-            newState = { ...state, name: action.payload.name };
+        },
+        updateFormName: (state, action: PayloadAction<string>) => {
+            const newState = { ...state, name: action.payload };
             return { ...newState, checkName: checkName(newState) };
-        case 'SAVE_ITEM':
+        },
+        saveItem: (state, action: PayloadAction<void>) => {
             // SAVE ボタンの処理をここに書くこともできる。
             console.log("SAVE_ID: ", state.id);
             console.log("SAVE_NAME: ", state.name);
             return state;
-        default:
-            return state;
+        },
     }
-};
+});
+
+export const { updateFormId, updateFormName, saveItem } = itemSlice.actions;
+
+export default itemSlice.reducer;

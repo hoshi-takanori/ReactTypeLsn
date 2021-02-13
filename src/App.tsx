@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import { useDispatch } from 'react-redux';
-import { saveItem } from './actions';
+import { saveItem } from './reducers';
 
 
 import './App.css';

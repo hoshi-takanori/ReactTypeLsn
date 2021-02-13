@@ -1,9 +1,9 @@
 'use strict';
 import React from 'react';
 import Styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateFormId, updateFormName } from '../actions';
-import { getIdState, getNameState, getCheckName } from '../createStores';
+import { useDispatch } from 'react-redux';
+import { useSelector } from '../createStores';
+import { updateFormId, updateFormName } from '../reducers';
 
 // const Form = styled.div<{primary: boolean}>`
   // margin: 20px;
@@ -14,7 +14,7 @@ interface ContentProps {
   }
 
 export default function Content({ onSaveItem }: ContentProps) {
-  const checkName = useSelector(getCheckName);
+  const checkName = useSelector(state => state.item.checkName);
 
   //NAME３文字以上ででsaveボタン押せるようにdisabledを入れる
   // console.log(props)
@@ -35,8 +35,8 @@ export default function Content({ onSaveItem }: ContentProps) {
 
 function Form() {
   const dispatch = useDispatch();
-  const id = useSelector(getIdState);
-  const name = useSelector(getNameState);
+  const id = useSelector(state => state.item.id);
+  const name = useSelector(state => state.item.name);
 
   // ApplicationState を更新するには const dispatch = useDispatch(); を使って、action creator を呼び出して作った action を dispatch に渡してあげる
   return (
